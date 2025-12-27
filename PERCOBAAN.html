@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>AXIA | Deep Tech Ecosystem</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- 1. CORE VARIABLES & RESET --- */
+        :root {
+            --bg-color: #030014; /* Deep Cosmic Blue */
+            --card-bg: rgba(15, 15, 25, 0.6); /* Glassmorphism */
+            --card-border: rgba(255, 255, 255, 0.1);
+            --text-main: #ffffff;
+            --text-muted: #a0a0b0;
+            --accent-primary: #5b21b6; /* Deep Purple */
+            --accent-cyan: #00f3ff;
+            --accent-radar: #10b981;
+            --accent-article: #f59e0b;
+            --chat-bg: #0f0f15;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            width: 100%;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- 2. BACKGROUND FX --- */
+        .background-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; overflow: hidden;
+        }
+
+        .orb {
+            position: absolute; border-radius: 50%;
+            filter: blur(80px); opacity: 0.4;
+            animation: floatOrb 20s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .orb-1 { width: 50vw; height: 50vw; background: #4c1d95; top: -10%; left: -10%; animation-delay: 0s; }
+        .orb-2 { width: 40vw; height: 40vw; background: #0e7490; bottom: -10%; right: -10%; animation-delay: -5s; }
+        .orb-3 { width: 30vw; height: 30vw; background: #be185d; top: 40%; left: 40%; animation-delay: -10s; opacity: 0.2; }
+
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 50px) scale(1.1); }
+        }
+
+        .noise-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 900; opacity: 0.07;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* --- 3. NAVIGATION --- */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1.5rem 2rem; position: fixed; width: 100%; top: 0;
+            z-index: 1000; 
+            background: rgba(3, 0, 20, 0.5);
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .logo { 
+            font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.5rem; letter-spacing: -1px; cursor: pointer; 
+            text-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
+        }
+
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        
+        .nav-item {
+            color: var(--text-muted); font-family: 'Inter'; font-size: 0.9rem; font-weight: 500;
+            cursor: pointer; transition: 0.3s;
+        }
+        .nav-item:hover { color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+
+        .nav-btn-contact {
+            background: rgba(255,255,255,0.1); color: #fff; padding: 0.5rem 1.2rem; border-radius: 50px;
+            font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: 0.3s; border: 1px solid rgba(255,255,255,0.2);
+        }
+        .nav-btn-contact:hover { background: #fff; color: #000; box-shadow: 0 0 20px rgba(255,255,255,0.3); }
+
+        .mobile-menu-btn { display: none; color: white; font-size: 1.5rem; cursor: pointer; }
+
+        /* --- 4. HERO SECTION --- */
+        .hero {
+            min-height: 90vh; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; padding: 8rem 1rem 4rem 1rem; position: relative;
+        }
+        .hero-label {
+            font-family: 'JetBrains Mono', monospace; color: var(--accent-cyan); font-size: 0.8rem;
+            border: 1px solid rgba(0, 243, 255, 0.3); padding: 5px 12px; border-radius: 20px;
+            margin-bottom: 1.5rem; background: rgba(0, 243, 255, 0.1); letter-spacing: 1px;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+        }
+        .hero-title {
+            font-family: 'Space Grotesk', sans-serif; font-size: clamp(2.5rem, 7vw, 5.5rem);
+            line-height: 1.1; letter-spacing: -2px; margin-bottom: 1.5rem;
+            background: linear-gradient(180deg, #fff 0%, #aaa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 30px rgba(255,255,255,0.1));
+        }
+        .hero-desc {
+            max-width: 700px; color: var(--text-muted); font-size: clamp(1rem, 4vw, 1.1rem);
+            line-height: 1.6; margin-bottom: 2.5rem; padding: 0 10px;
+        }
+        .cta-group { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-bottom: 4rem; }
+        .btn-primary {
+            background: white; color: black; padding: 12px 30px; border-radius: 8px;
+            font-weight: 600; text-decoration: none; transition: 0.3s; display: inline-block; cursor: pointer; border: none;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(255,255,255,0.4); }
+        .btn-secondary {
+            border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 12px 30px; border-radius: 8px;
+            font-weight: 600; text-decoration: none; transition: 0.3s; display: inline-block; cursor: pointer;
+            backdrop-filter: blur(5px);
+        }
+        .btn-secondary:hover { background: rgba(255,255,255,0.1); border-color: #fff; }
+
+        /* --- 5. DYNAMIC ILLUSTRATION STYLES (HOME PAGE) --- */
+        .tech-visual-container {
+            width: 100%; height: 250px;
+            display: flex; justify-content: center; align-items: center;
+            overflow: hidden; position: relative;
+            background: rgba(0,0,0,0.2); border-radius: 16px;
+            margin-bottom: 1.5rem;
+        }
+
+        /* 1. SOLAR SCANNER ANIMATION */
+        .solar-scanner-box {
+            width: 120px; height: 160px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 8px; position: relative;
+            box-shadow: 0 0 20px rgba(91, 33, 182, 0.2);
+            background: linear-gradient(180deg, rgba(255,255,255,0.05), transparent);
+        }
+        .solar-beam {
+            position: absolute; left: -10%; width: 120%; height: 2px;
+            background: var(--accent-cyan);
+            box-shadow: 0 0 15px var(--accent-cyan);
+            animation: scanMove 3s infinite ease-in-out;
+            opacity: 0.8;
+        }
+        .solar-item {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 60px; height: 80px; background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+        }
+        @keyframes scanMove {
+            0% { top: 10%; opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { top: 90%; opacity: 0; }
+        }
+
+        /* 2. HYDRO CORE ANIMATION */
+        .hydro-core-circle {
+            width: 100px; height: 100px;
+            background: radial-gradient(circle, rgba(0, 243, 255, 0.2), transparent);
+            border: 1px solid var(--accent-hydro);
+            border-radius: 50% 50% 50% 50%;
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.3), inset 0 0 20px rgba(0, 243, 255, 0.2);
+            animation: fluidPulse 4s infinite ease-in-out;
+            position: relative; display: flex; justify-content: center; align-items: center;
+        }
+        .hydro-particle {
+            position: absolute; width: 6px; height: 6px; background: #fff; border-radius: 50%;
+            animation: riseUp 2s infinite linear; opacity: 0;
+        }
+        @keyframes fluidPulse {
+            0%, 100% { transform: scale(1); border-radius: 50% 50% 50% 50%; }
+            50% { transform: scale(1.05); border-radius: 45% 55% 50% 50%; }
+        }
+        @keyframes riseUp {
+            0% { transform: translateY(20px); opacity: 0; }
+            50% { opacity: 0.8; }
+            100% { transform: translateY(-30px); opacity: 0; }
+        }
+
+        /* 3. RADAR SCOPE ANIMATION */
+        .radar-scope-circle {
+            width: 140px; height: 140px;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 50%; position: relative;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.05), transparent);
+            display: flex; justify-content: center; align-items: center;
+        }
+        .radar-grid {
+            position: absolute; width: 100%; height: 100%; border-radius: 50%;
+            background-image: 
+                linear-gradient(rgba(16, 185, 129, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(16, 185, 129, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            clip-path: circle(50%);
+        }
+        .radar-sweep {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, transparent 0deg, rgba(16, 185, 129, 0.4) 30deg, transparent 30.1deg);
+            animation: radarSpin 3s infinite linear;
+        }
+        .radar-dot {
+            position: absolute; width: 6px; height: 6px; background: #fff; border-radius: 50%;
+            box-shadow: 0 0 10px #fff;
+            animation: blinkDot 2s infinite;
+        }
+        @keyframes radarSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes blinkDot { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
+
+        /* --- DETAILED MECHANISM ILLUSTRATIONS (FOR MODALS) --- */
+        .mechanism-diagram {
+            width: 100%;
+            padding: 20px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* SolarFold Mechanism */
+        .sf-mech-container {
+            display: flex; flex-direction: column; gap: 10px; align-items: center; width: 100%;
+        }
+        .sf-step {
+            display: flex; align-items: center; gap: 15px; width: 100%;
+            background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px;
+        }
+        .sf-icon-box {
+            width: 40px; height: 40px; background: var(--accent-primary); border-radius: 8px;
+            display: flex; justify-content: center; align-items: center; font-size: 1.2rem;
+        }
+        .sf-step-text { font-size: 0.9rem; color: #ccc; }
+        .sf-arrow { color: #555; font-size: 1.2rem; }
+
+        /* Hydro-AI Mechanism */
+        .hydro-flow-container {
+            display: flex; align-items: center; justify-content: space-between; width: 100%; position: relative;
+        }
+        .hydro-node {
+            width: 50px; height: 50px; border-radius: 50%; background: rgba(0, 243, 255, 0.1);
+            border: 1px solid var(--accent-hydro); display: flex; justify-content: center; align-items: center;
+            font-size: 1.2rem; z-index: 2; position: relative;
+        }
+        .hydro-line {
+            flex: 1; height: 2px; background: rgba(0, 243, 255, 0.2); position: relative;
+        }
+        .hydro-line::after {
+            content: ''; position: absolute; top: -1px; left: 0; width: 20%; height: 4px;
+            background: var(--accent-hydro); border-radius: 2px;
+            animation: flowLine 2s infinite linear;
+        }
+        @keyframes flowLine { 0% { left: 0; } 100% { left: 100%; } }
+
+        /* Radar Mechanism */
+        .radar-mech-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%;
+        }
+        .radar-box {
+            background: rgba(16, 185, 129, 0.1); border: 1px solid var(--accent-radar);
+            padding: 10px; border-radius: 8px; text-align: center;
+        }
+        .radar-box h4 { color: var(--accent-radar); font-size: 0.8rem; margin-bottom: 5px; }
+        .radar-box p { font-size: 0.7rem; color: #aaa; }
+
+
+        /* --- BENTO & CARDS --- */
+        .bento-container {
+            max-width: 1200px; margin: 0 auto; padding: 2rem;
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem;
+        }
+        .bento-card {
+            background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 24px;
+            padding: 2rem; position: relative; overflow: hidden; display: flex; flex-direction: column;
+            justify-content: space-between; transition: 0.4s ease;
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+        }
+        .bento-card:hover {
+            border-color: rgba(255,255,255,0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .card-main { grid-column: span 2; grid-row: span 2; min-height: 450px; background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(0,0,0,0)); }
+        .card-ai { grid-column: span 1; grid-row: span 1; }
+        .card-energy { grid-column: span 1; grid-row: span 1; }
+        .card-team { grid-column: span 2; grid-row: span 1; display: flex; flex-direction: row; align-items: center; gap: 1.5rem; background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(0,0,0,0)); }
+        
+        .card-title { font-family: 'Space Grotesk'; font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; color: #fff; }
+        .card-sub { color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; }
+        
+        .founder-img-wrapper {
+            width: 90px; height: 90px; border-radius: 50%; overflow: hidden;
+            border: 2px solid var(--accent-cyan); flex-shrink: 0; position: relative;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+        }
+        .founder-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+        .founder-badge { font-family: 'JetBrains Mono'; font-size: 0.7rem; color: var(--accent-cyan); margin-bottom: 5px; display: block; letter-spacing: 1px;}
+
+        /* --- INNOVATION SECTION --- */
+        .innovation-header {
+            max-width: 1200px; margin: 4rem auto 2rem auto; padding: 0 2rem;
+            font-family: 'Space Grotesk'; font-size: 2rem; font-weight: 700; display: flex; align-items: center; gap: 1rem;
+            text-shadow: 0 0 20px rgba(255,255,255,0.2);
+        }
+        .innovation-header::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, rgba(255,255,255,0.5), transparent); }
+        .innovation-container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+        .innovation-card {
+            background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 24px;
+            padding: 2.5rem; position: relative; overflow: hidden; transition: 0.4s ease; min-height: 400px; cursor: pointer;
+            backdrop-filter: blur(20px);
+        }
+        .innovation-card:hover { transform: translateY(-5px); }
+        .card-hydro:hover { border-color: var(--accent-hydro); box-shadow: 0 0 40px rgba(0, 243, 255, 0.2); }
+        .card-hydro .card-title { color: var(--accent-hydro); }
+        .card-radar:hover { border-color: var(--accent-radar); box-shadow: 0 0 40px rgba(16, 185, 129, 0.2); }
+        .card-radar .card-title { color: var(--accent-radar); }
+        .tech-pill-container { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
+        .tech-pill {
+            font-family: 'JetBrains Mono'; font-size: 0.75rem; padding: 4px 10px; border-radius: 4px;
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff;
+        }
+
+        /* --- MARQUEE --- */
+        .marquee-container {
+            width: 100%; background: #fff; color: #000; padding: 1rem 0;
+            overflow: hidden; white-space: nowrap; margin: 4rem 0; transform: rotate(-1deg) scale(1.02);
+            box-shadow: 0 0 30px rgba(255,255,255,0.3);
+        }
+        .marquee-content {
+            display: inline-block; animation: scrollText 20s linear infinite;
+            font-family: 'Space Grotesk'; font-weight: 700; font-size: 1.2rem; text-transform: uppercase;
+        }
+        @keyframes scrollText { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        /* --- FOOTER --- */
+        footer { text-align: center; padding: 4rem 2rem; color: #444; font-size: 0.9rem; border-top: 1px solid rgba(255,255,255,0.05); }
+
+        /* --- MODAL SYSTEM --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(25px);
+            z-index: 2000; display: flex; justify-content: center; align-items: center;
+            opacity: 0; visibility: hidden; transition: 0.3s ease;
+        }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        
+        .modal-box {
+            background: rgba(15, 15, 20, 0.9); border: 1px solid rgba(255,255,255,0.1);
+            width: 90%; max-width: 650px; padding: 2.5rem; border-radius: 24px;
+            text-align: left; transform: scale(0.9); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5); position: relative;
+            max-height: 90vh; overflow-y: auto;
+        }
+        .modal-overlay.active .modal-box { transform: scale(1); }
+        
+        .modal-close {
+            position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none;
+            color: #666; font-size: 1.5rem; cursor: pointer; transition: 0.3s; z-index: 10;
+        }
+        .modal-close:hover { color: #fff; }
+
+        /* VISION & MISSION IN MODAL */
+        .modal-vm-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;
+            padding-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .vm-title { color: var(--accent-cyan); font-family: 'Space Grotesk'; font-size: 1.2rem; margin-bottom: 0.5rem; font-weight: bold; }
+        .vm-text { color: #ccc; font-size: 0.9rem; line-height: 1.6; }
+
+        .product-select-grid {
+            display: grid; grid-template-columns: 1fr; gap: 1rem; margin-top: 1.5rem;
+        }
+        .product-option {
+            background: rgba(255,255,255,0.03); border: 1px solid var(--card-border);
+            padding: 1.5rem; border-radius: 16px; cursor: pointer; transition: 0.3s;
+            display: flex; align-items: center; gap: 1rem;
+        }
+        .product-option:hover { background: rgba(255,255,255,0.08); border-color: var(--accent-cyan); transform: translateX(5px); }
+        .prod-icon { font-size: 2rem; }
+        
+        /* ARTICLE CARD STYLES */
+        .article-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-top: 1.5rem; }
+        .article-card {
+            background: rgba(255,255,255,0.03); border: 1px solid var(--card-border);
+            padding: 1.5rem; border-radius: 16px; cursor: pointer; transition: 0.3s;
+            display: flex; flex-direction: column; gap: 0.5rem;
+        }
+        .article-card:hover { border-color: var(--accent-article); background: rgba(245, 158, 11, 0.05); transform: translateX(5px); }
+        .article-title { color: #fff; font-family: 'Space Grotesk'; font-size: 1.2rem; font-weight: bold; }
+        .article-desc { color: #888; font-size: 0.9rem; }
+        .article-tag { 
+            display: inline-block; font-size: 0.7rem; color: var(--accent-article); 
+            border: 1px solid var(--accent-article); padding: 2px 8px; border-radius: 4px; width: fit-content;
+        }
+
+        /* ARTICLE CONTENT STYLING */
+        .article-content h3 { color: var(--accent-article); font-family: 'Space Grotesk'; margin: 1.5rem 0 0.5rem 0; font-size: 1.3rem; }
+        .article-content p { color: #ccc; line-height: 1.7; margin-bottom: 1rem; font-size: 1rem; }
+        .article-content ul { padding-left: 1.5rem; margin-bottom: 1rem; }
+        .article-content li { color: #ccc; margin-bottom: 0.5rem; line-height: 1.6; }
+        .article-content strong { color: #fff; }
+        
+        .modal-h2 { font-family: 'Space Grotesk'; font-size: 2rem; margin-bottom: 0.5rem; color: #fff; line-height: 1.2; text-shadow: 0 0 20px rgba(255,255,255,0.1); }
+        .modal-p { color: #aaa; line-height: 1.6; font-size: 1rem; margin-bottom: 1rem; }
+        .modal-tag { color: var(--accent-cyan); font-family: 'JetBrains Mono'; font-size: 0.8rem; margin-bottom: 1rem; display: block; letter-spacing: 2px; font-weight: bold; }
+        
+        .price-tag-container {
+            display: inline-block; padding: 10px 20px; border-radius: 50px;
+            background: rgba(255,255,255,0.05); border: 1px solid; margin: 1rem 0;
+        }
+        .price-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
+        .price-amount { font-family: 'Space Grotesk'; font-size: 1.5rem; font-weight: 700; }
+        
+        .ad-box {
+            background: linear-gradient(90deg, rgba(255,255,255,0.05), transparent);
+            border-left: 4px solid; padding: 1.5rem; margin: 1.5rem 0; font-style: italic; color: #fff;
+        }
+
+        .detail-section { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.1); }
+        .detail-h3 { color: #fff; font-family: 'Space Grotesk'; margin-bottom: 0.5rem; font-size: 1.2rem; }
+        .detail-list { list-style: none; padding: 0; display: grid; grid-template-columns: 1fr; gap: 10px; }
+        .detail-list li { color: #ccc; padding-left: 1.5rem; position: relative; font-size: 0.95rem; }
+        .detail-list li::before { 
+            content: '✓'; position: absolute; left: 0; color: inherit; font-weight: bold;
+        }
+
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-top: 1.5rem; }
+        .contact-btn {
+            background: rgba(255,255,255,0.05); padding: 1.5rem; border-radius: 16px;
+            text-align: center; cursor: pointer; transition: 0.3s; text-decoration: none; color: white; border: 1px solid transparent;
+        }
+        .contact-btn:hover { border-color: var(--accent-primary); background: rgba(59, 130, 246, 0.1); transform: translateY(-5px); }
+
+        /* --- 10. AI CHATBOT WIDGET STYLES --- */
+        .chat-widget {
+            position: fixed; bottom: 2rem; right: 2rem; z-index: 9999;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .chat-toggle {
+            width: 60px; height: 60px; border-radius: 50%;
+            background: var(--accent-primary); border: none;
+            color: white; font-size: 1.5rem; cursor: pointer;
+            box-shadow: 0 0 20px rgba(91, 33, 182, 0.6);
+            transition: 0.3s; display: flex; align-items: center; justify-content: center;
+        }
+        .chat-toggle:hover { transform: scale(1.1); box-shadow: 0 0 30px rgba(91, 33, 182, 0.8); }
+        
+        .chat-window {
+            position: absolute; bottom: 80px; right: 0;
+            width: 350px; height: 500px;
+            background: rgba(15, 15, 20, 0.95); border: 1px solid var(--card-border);
+            border-radius: 16px; display: none; flex-direction: column;
+            overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            backdrop-filter: blur(20px);
+        }
+        .chat-window.open { display: flex; }
+        
+        .chat-header {
+            background: rgba(255,255,255,0.05); padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .chat-title { font-weight: 700; color: white; font-family: 'Space Grotesk'; }
+        
+        .chat-body {
+            flex: 1; padding: 1rem; overflow-y: auto;
+            display: flex; flex-direction: column; gap: 0.8rem;
+        }
+        
+        .chat-input-area {
+            padding: 1rem; border-top: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2);
+            display: flex; gap: 0.5rem;
+        }
+        
+        .chat-input {
+            flex: 1; background: rgba(255,255,255,0.1); border: none; padding: 10px;
+            border-radius: 8px; color: white; font-family: 'Inter'; outline: none;
+        }
+        
+        .chat-send {
+            background: var(--accent-primary); border: none; color: white;
+            padding: 0 15px; border-radius: 8px; cursor: pointer;
+        }
+
+        .message {
+            max-width: 80%; padding: 10px 14px; border-radius: 12px; font-size: 0.9rem; line-height: 1.4;
+        }
+        .message.user { align-self: flex-end; background: var(--accent-primary); color: white; border-bottom-right-radius: 2px; }
+        .message.bot { align-self: flex-start; background: rgba(255,255,255,0.1); color: #ddd; border-bottom-left-radius: 2px; }
+        .typing-indicator { font-size: 0.8rem; color: #666; font-style: italic; margin-left: 10px; display: none; }
+
+        /* --- RADAR AI DEMO STYLES --- */
+        .radar-ai-box {
+            background: rgba(16, 185, 129, 0.05); border: 1px dashed var(--accent-radar);
+            border-radius: 12px; padding: 1.5rem; margin-top: 1.5rem;
+        }
+        .radar-input {
+            width: 100%; background: rgba(0,0,0,0.5); border: 1px solid #333; color: white;
+            padding: 12px; border-radius: 8px; margin-top: 10px; font-family: 'JetBrains Mono';
+        }
+        .radar-btn {
+            background: var(--accent-radar); color: black; border: none;
+            padding: 10px 20px; border-radius: 8px; margin-top: 10px; cursor: pointer;
+            font-weight: bold; width: 100%; transition: 0.3s;
+        }
+        .radar-btn:hover { opacity: 0.9; box-shadow: 0 0 15px rgba(16, 185, 129, 0.4); }
+        .radar-result {
+            margin-top: 1rem; color: #ddd; font-size: 0.9rem; border-left: 3px solid var(--accent-radar);
+            padding-left: 1rem; min-height: 40px; display: none;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) {
+            .bento-container { grid-template-columns: repeat(2, 1fr); }
+            .card-main { grid-column: span 2; min-height: 350px; }
+            .card-team { grid-column: span 2; }
+            .card-ai, .card-energy { grid-column: span 1; }
+            .hero-title { font-size: 4rem; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; } 
+            .mobile-menu-btn { display: block; }
+            .contact-grid { grid-template-columns: 1fr; }
+            .modal-vm-grid { grid-template-columns: 1fr; gap: 1rem; }
+            
+            nav.mobile-active .nav-links {
+                display: flex; flex-direction: column; position: absolute;
+                top: 100%; left: 0; width: 100%; background: #050505;
+                padding: 2rem; border-bottom: 1px solid #333;
+            }
+            .chat-window { width: 90%; right: 5%; bottom: 80px; }
+        }
+
+        @media (max-width: 640px) {
+            nav { padding: 1rem; }
+            .hero { padding-top: 5rem; }
+            .bento-container { grid-template-columns: 1fr; padding: 1rem; gap: 1rem; }
+            .card-main, .card-ai, .card-energy, .card-team { grid-column: span 1; }
+            .innovation-container { grid-template-columns: 1fr; padding: 1rem; }
+            .innovation-header { font-size: 1.5rem; margin-top: 3rem; }
+            .card-team { flex-direction: column; text-align: center; padding: 1.5rem; }
+            .founder-img-wrapper { margin-bottom: 1rem; }
+            .contact-section { margin: 2rem auto; }
+            .modal-box { padding: 1.5rem; }
+            .price-amount { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Elements -->
+    <div class="background-container">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+    <div class="noise-overlay"></div>
+
+    <!-- NAVIGATION MENU -->
+    <nav id="navbar">
+        <div class="logo" onclick="scrollToTop()">AXIA</div>
+        <div class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</div>
+        <ul class="nav-links">
+            <li class="nav-item" onclick="scrollToTop()">Beranda</li>
+            <li class="nav-item" onclick="openAboutModal()">Tentang</li> <!-- Includes Vision & Mission -->
+            <li class="nav-item" onclick="openServicesModal()">Layanan</li>
+            <li class="nav-item" onclick="openPortfolioModal()">Portofolio</li>
+            <li class="nav-item" onclick="openArticlesModal()">Artikel</li>
+            <li><button class="nav-btn-contact" onclick="openContactModal()">Hubungi Kami</button></li>
+        </ul>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero-label">PIONEERING DEEP TECH & INNOVATION</div>
+        <h1 class="hero-title">Merancang Kemajuan,<br>Mewujudkan Masa Depan.</h1>
+        <p class="hero-desc">
+            AXIA hadir sebagai startup Deep Tech yang mengubah ide visioner menjadi solusi nyata. Dari robotika otonom hingga kecerdasan buatan, kami membangun ekosistem teknologi untuk efisiensi dan keberlanjutan hidup Anda.
+        </p>
+        <div class="cta-group">
+            <button class="btn-primary" onclick="openAboutModal()">Jelajahi Visi Kami</button>
+            <button class="btn-secondary" onclick="openProductDetail('solarfold')">Lihat Inovasi</button>
+        </div>
+    </section>
+
+    <div class="marquee-container">
+        <div class="marquee-content">
+            INNOVATING FOR TOMORROW /// ADVANCED ROBOTICS /// ARTIFICIAL INTELLIGENCE /// SUSTAINABLE ENERGY /// AXIA DEEP TECH ECOSYSTEM /// INNOVATING FOR TOMORROW ///
+        </div>
+    </div>
+
+    <!-- MAIN SOLARFOLD GRID -->
+    <section class="bento-container">
+        <!-- Main Product Card with DYNAMIC VISUAL -->
+        <div class="bento-card card-main">
+            <div style="position: absolute; top: 2rem; left: 2rem; z-index: 2;">
+                <div class="card-title">SolarFold X-1 Pro</div>
+                <div class="card-sub">The flagship autonomous unit.</div>
+            </div>
+            
+            <!-- TECH VISUAL: SOLAR SCANNER -->
+            <div class="tech-visual-container">
+                <div class="solar-scanner-box">
+                    <div class="solar-item"></div>
+                    <div class="solar-beam"></div>
+                </div>
+            </div>
+
+            <div style="position: absolute; bottom: 2rem; right: 2rem; font-family: 'JetBrains Mono'; color: #444;">110cm x 60cm</div>
+        </div>
+        
+        <!-- AI Feature -->
+        <div class="bento-card card-ai">
+            <div style="font-size: 2rem; margin-bottom: 1rem;">👁️</div>
+            <div class="card-title">Vertical Vision</div>
+            <div class="card-sub">YOLOv8 AI mendeteksi noda & jenis kain secara real-time.</div>
+        </div>
+        <!-- Energy Feature -->
+        <div class="bento-card card-energy">
+            <div style="font-size: 2rem; margin-bottom: 1rem;">⚡</div>
+            <div class="card-title">Hybrid Buffer</div>
+            <div class="card-sub">LiFePO4 + Solar Panel. Bekerja mandiri tanpa PLN.</div>
+        </div>
+        <!-- CEO Profile Card -->
+        <div class="bento-card card-team">
+            <div class="founder-img-wrapper">
+                <img src="ESS_Arya Satria Pratama (2).jpg" alt="CEO Arya" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=Arya+Satria+Pratama&background=3b82f6&color=fff&size=128&bold=true';">
+            </div>
+            <div>
+                <span class="founder-badge">CHIEF EXECUTIVE OFFICER</span>
+                <div class="card-title" style="font-size: 1.2rem; margin-bottom: 0.2rem;">Arya Satria Pratama</div>
+                <div class="card-sub" style="font-size: 0.9rem;">
+                    Seorang visioner teknologi dengan fokus mendalam pada integrasi AI dan efisiensi energi. Arya memimpin AXIA dengan filosofi bahwa inovasi sejati harus membebaskan manusia dari rutinitas yang tidak produktif.
+                </div>
+            </div>
+        </div>
+        <!-- CFO Profile Card -->
+        <div class="bento-card card-team">
+            <div class="founder-img-wrapper">
+                <img src="hilman.jpg" alt="CFO Hilman" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=Hilman+Irsyad+Triadi&background=10b981&color=fff&size=128&bold=true';">
+            </div>
+            <div>
+                <span class="founder-badge" style="color: #10b981;">CHIEF FINANCIAL OFFICER</span>
+                <div class="card-title" style="font-size: 1.2rem; margin-bottom: 0.2rem;">Hilman Irsyad Triadi</div>
+                <div class="card-sub" style="font-size: 0.9rem;">
+                    Ahli strategi keuangan yang memastikan pertumbuhan AXIA yang berkelanjutan. Hilman menggabungkan ketajaman analisis pasar dengan pemahaman mendalam tentang ekosistem startup untuk mendorong skalabilitas bisnis.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- INNOVATION ECOSYSTEM SECTION -->
+    <div class="innovation-header">EXPANDING HORIZONS</div>
+    <section class="innovation-container">
+        <!-- PRODUCT 2: HYDRO-AI PRO with DYNAMIC VISUAL -->
+        <div class="innovation-card card-hydro" onclick="openProductDetail('hydro')">
+            
+            <!-- TECH VISUAL: HYDRO CORE -->
+            <div class="tech-visual-container" style="height: 150px; background: transparent; margin-bottom:1rem;">
+                <div class="hydro-core-circle">
+                    <div class="hydro-particle" style="animation-delay: 0s; left: 40%;"></div>
+                    <div class="hydro-particle" style="animation-delay: 1s; left: 60%;"></div>
+                    <div class="hydro-particle" style="animation-delay: 0.5s; left: 50%;"></div>
+                </div>
+            </div>
+
+            <div class="card-title" style="font-size: 1.8rem;">Hydro-AI Pro</div>
+            <div class="card-sub" style="margin-top: 0.5rem; font-size: 1rem;">Sistem Manajemen Air Mandiri Otonom.</div>
+            <div class="tech-pill-container">
+                <div class="tech-pill">AUTONOMOUS WASTE ROUTING</div>
+                <div class="tech-pill">SPECTROMETRY ANALYSIS</div>
+            </div>
+        </div>
+        
+        <!-- PRODUCT 3: RADAR UMKM with DYNAMIC VISUAL -->
+        <div class="innovation-card card-radar" onclick="openProductDetail('radar')">
+            
+            <!-- TECH VISUAL: RADAR SCOPE -->
+            <div class="tech-visual-container" style="height: 150px; background: transparent; margin-bottom:1rem;">
+                <div class="radar-scope-circle">
+                    <div class="radar-grid"></div>
+                    <div class="radar-sweep"></div>
+                    <div class="radar-dot" style="top: 30%; left: 40%;"></div>
+                    <div class="radar-dot" style="top: 0%; left: 70%; animation-delay: 1s;"></div>
+                </div>
+            </div>
+
+            <div class="card-title" style="font-size: 1.8rem;">Radar UMKM</div>
+            <div class="card-sub" style="margin-top: 0.5rem; font-size: 1rem;">Platform Intelijen Bisnis IoT & AI.</div>
+            <div class="tech-pill-container">
+                <div class="tech-pill">MARKET SENSING</div>
+                <div class="tech-pill">IOT INTEGRATION</div>
+                <div class="tech-pill">✨ GENERATIVE INSIGHT</div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 AXIA Corp. Designed for the Future.</p>
+    </footer>
+
+    <!-- ================= MODAL SYSTEMS ================= -->
+
+    <!-- 1. ABOUT MODAL (INCLUDES VISION & MISSION) -->
+    <div class="modal-overlay" id="aboutModal">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeAllModals()">×</button>
+            <span class="modal-tag">AXIA ECOSYSTEM</span>
+            <h2 class="modal-h2">Jelajahi Visi Kami</h2>
+            
+            <!-- VISION & MISSION BLOCK -->
+            <div class="modal-vm-grid">
+                <div>
+                    <div class="vm-title">🚀 Visi Kami</div>
+                    <p class="vm-text">
+                        Menjadi arsitek peradaban modern di mana teknologi tidak hanya canggih, tetapi juga memanusiakan dan membebaskan. Kami membayangkan masa depan di mana otomatisasi memberikan kembali waktu berharga Anda, sementara energi terbarukan menjaga bumi tetap lestari.
+                    </p>
+                </div>
+                <div>
+                    <div class="vm-title">⚡ Misi Kami</div>
+                    <p class="vm-text">
+                        Menciptakan ekosistem produk pintar yang menghemat biaya dan sumber daya tanpa mengorbankan performa. Melalui integrasi AI dan Robotika, kami menghapus inefisiensi dalam rutinitas sehari-hari, menjadikan kemewahan teknologi modern dapat diakses oleh setiap rumah tangga dan pelaku bisnis.
+                    </p>
+                </div>
+            </div>
+
+            <p class="modal-p">Pilih salah satu produk deep-tech kami untuk melihat spesifikasi detail, harga, dan keunggulannya.</p>
+            
+            <div class="product-select-grid">
+                <div class="product-option" onclick="openProductDetail('solarfold')">
+                    <span class="prod-icon">👕</span>
+                    <div>
+                        <div style="color:white; font-weight:bold;">SolarFold X-1 Pro</div>
+                        <div style="color:#666; font-size:0.8rem;">Autonomous Laundry Robot</div>
+                    </div>
+                </div>
+                <div class="product-option" onclick="openProductDetail('hydro')">
+                    <span class="prod-icon">💧</span>
+                    <div>
+                        <div style="color:white; font-weight:bold;">Hydro-AI Pro</div>
+                        <div style="color:#666; font-size:0.8rem;">Smart Water Management</div>
+                    </div>
+                </div>
+                <div class="product-option" onclick="openProductDetail('radar')">
+                    <span class="prod-icon">📡</span>
+                    <div>
+                        <div style="color:white; font-weight:bold;">Radar UMKM</div>
+                        <div style="color:#666; font-size:0.8rem;">IoT Business Intelligence</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. PRODUCT DETAIL MODAL (DYNAMIC CONTENT) -->
+    <div class="modal-overlay" id="productDetailModal">
+        <div class="modal-box" id="productDetailContent">
+            <!-- Content injected via JS -->
+        </div>
+    </div>
+
+    <!-- 3. SERVICES MODAL -->
+    <div class="modal-overlay" id="servicesModal">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeAllModals()">×</button>
+            <span class="modal-tag">LAYANAN KAMI</span>
+            <h2 class="modal-h2">Solusi End-to-End</h2>
+            <div class="detail-section">
+                <h3 class="detail-h3">01. Hardware Installation</h3>
+                <p class="modal-p">Instalasi unit SolarFold dan Hydro-AI oleh tim teknisi bersertifikat, termasuk integrasi panel surya.</p>
+            </div>
+            <div class="detail-section">
+                <h3 class="detail-h3">02. AI Cloud Maintenance</h3>
+                <p class="modal-p">Pembaruan algoritma Vision AI secara berkala (OTA) untuk mendeteksi jenis kain dan noda baru.</p>
+            </div>
+            <div class="detail-section">
+                <h3 class="detail-h3">03. Business Consultation</h3>
+                <p class="modal-p">Konsultasi implementasi Radar UMKM untuk efisiensi operasional bisnis laundry dan retail.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. PORTFOLIO MODAL (UPDATED) -->
+    <div class="modal-overlay" id="portfolioModal">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeAllModals()">×</button>
+            <span class="modal-tag">JEJAK LANGKAH</span>
+            <h2 class="modal-h2">Portofolio & Pencapaian</h2>
+            <div class="detail-section">
+                <h3 class="detail-h3">🏆 Pertamuda Seed & Scale 2026</h3>
+                <p class="modal-p">Top 3 Early Stage Startup Category. Inovasi efisiensi energi sektor domestik.</p>
+            </div>
+            <div class="detail-section">
+                <h3 class="detail-h3">🤝 Pilot Project: Apartemen Green Central</h3>
+                <p class="modal-p">Implementasi 50 Unit SolarFold X-1 Pro untuk fasilitas laundry bersama.</p>
+            </div>
+            <div class="detail-section">
+                <h3 class="detail-h3">🏭 Kemitraan Strategis</h3>
+                <p class="modal-p">Kerjasama manufaktur dengan PT. Inovasi Robotika Indonesia untuk produksi massal.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. ARTICLES MODAL -->
+    <div class="modal-overlay" id="articlesModal">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeAllModals()">×</button>
+            <span class="modal-tag" style="color:var(--accent-article);">WAWASAN & EDUKASI</span>
+            <h2 class="modal-h2">Perpustakaan Inovasi</h2>
+            <p class="modal-p">Kumpulan materi dan kerangka berpikir strategis untuk membangun startup yang tervalidasi.</p>
+            
+            <div class="article-grid">
+                <div class="article-card" onclick="openArticleDetail('momtest')">
+                    <span class="article-tag">VALIDASI PASAR</span>
+                    <div class="article-title">The Mom Test: Mendapatkan Kebenaran dari Pelanggan</div>
+                    <div class="article-desc">Jangan tanya "Apakah ide saya bagus?", tapi tanya tentang hidup mereka. Pelajari seni wawancara jujur.</div>
+                </div>
+                <div class="article-card" onclick="openArticleDetail('jtbd')">
+                    <span class="article-tag">PSIKOLOGI PRODUK</span>
+                    <div class="article-title">Jobs To Be Done (JTBD)</div>
+                    <div class="article-desc">Pelanggan tidak membeli produk, mereka "menyewa" produk untuk menyelesaikan sebuah pekerjaan. Pahami motivasi mereka.</div>
+                </div>
+                <div class="article-card" onclick="openArticleDetail('vpc')">
+                    <span class="article-tag">STRATEGI BISNIS</span>
+                    <div class="article-title">Value Proposition Canvas (VPC)</div>
+                    <div class="article-desc">Petakan Pains (Rasa Sakit) dan Gains (Keuntungan) pelanggan untuk menciptakan solusi yang tepat sasaran.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. ARTICLE DETAIL MODAL -->
+    <div class="modal-overlay" id="articleDetailModal">
+        <div class="modal-box" id="articleDetailContent">
+            <!-- Content injected via JS -->
+        </div>
+    </div>
+
+    <!-- 7. CONTACT MODAL -->
+    <div class="modal-overlay" id="contactModal">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeAllModals()">×</button>
+            <span class="modal-tag">HUBUNGI KAMI</span>
+            <h2 class="modal-h2">Terhubung dengan AXIA</h2>
+            <p class="modal-p">Silakan pilih platform di bawah ini untuk berdiskusi langsung dengan tim kami.</p>
+            
+            <div class="contact-grid">
+                <a href="https://wa.me/6285860264235" target="_blank" class="contact-btn">
+                    <div style="font-size:2rem; margin-bottom:0.5rem;">💬</div>
+                    <div style="font-weight:bold;">WhatsApp</div>
+                </a>
+                <a href="https://www.instagram.com/aryastr.__?igsh=bXNqanFvMzVwejd5" target="_blank" class="contact-btn">
+                    <div style="font-size:2rem; margin-bottom:0.5rem;">📸</div>
+                    <div style="font-weight:bold;">Instagram</div>
+                </a>
+                <a href="mailto:aryapratama89085@gmail.com" class="contact-btn">
+                    <div style="font-size:2rem; margin-bottom:0.5rem;">✉️</div>
+                    <div style="font-weight:bold;">Email</div>
+                </a>
+            </div>
+            
+            <div style="margin-top: 2rem; border-top: 1px solid #333; padding-top: 1rem;">
+                <div style="color:#666; font-size:0.8rem;">PHONE</div>
+                <div style="color:#fff; margin-bottom:1rem;">0858-6026-4235</div>
+                
+                <div style="color:#666; font-size:0.8rem;">EMAIL</div>
+                <div style="color:#fff;">aryapratama89085@gmail.com</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= AI CHATBOT WIDGET ================= -->
+    <div class="chat-widget">
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <div class="chat-title">AXIA Neuro-Core ✨</div>
+                <button onclick="toggleChat()" style="background:none; border:none; color:white; cursor:pointer;">×</button>
+            </div>
+            <div class="chat-body" id="chatBody">
+                <div class="message bot">Halo! Saya AI Assistant dari AXIA. Ada yang bisa saya bantu mengenai SolarFold, Hydro-AI, atau Radar UMKM?</div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="chatInput" class="chat-input" placeholder="Tanya sesuatu..." onkeypress="handleChatKey(event)">
+                <button class="chat-send" onclick="sendChat()">➤</button>
+            </div>
+        </div>
+        <button class="chat-toggle" onclick="toggleChat()">🤖</button>
+    </div>
+
+    <script>
+        // --- GEMINI API CONFIGURATION ---
+        // PENTING: Masukkan API Key Google Gemini Anda di sini.
+        // Dapatkan di: https://aistudio.google.com/app/apikey
+        const apiKey = ""; 
+
+        async function callGemini(userPrompt, systemInstruction) {
+            if (!apiKey) {
+                // Fallback untuk demo jika API Key belum diisi
+                await new Promise(r => setTimeout(r, 1000));
+                return "⚠️ [DEMO MODE] API Key belum dikonfigurasi. Silakan masukkan API Key Gemini Anda pada kode baris ~650 untuk respon AI yang sebenarnya.";
+            }
+
+            // Menggunakan model gemini-1.5-flash
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+            
+            const payload = {
+                contents: [{ parts: [{ text: userPrompt }] }],
+                systemInstruction: { parts: [{ text: systemInstruction }] }
+            };
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!response.ok) throw new Error(`API Error: ${response.status}`);
+                
+                const data = await response.json();
+                return data.candidates[0].content.parts[0].text;
+            } catch (error) {
+                console.error("Gemini Error:", error);
+                return "Maaf, terjadi kesalahan saat menghubungi AI. Periksa koneksi atau API Key Anda.";
+            }
+        }
+
+        // --- KNOWLEDGE BASE DATA ---
+        const knowledgeBaseData = {
+            'momtest': {
+                title: 'The Mom Test',
+                subtitle: 'Seni Mendapatkan Kebenaran dari Pelanggan',
+                color: '#f59e0b',
+                content: `
+                    <div class="article-content">
+                        <p><strong>Filosofi Dasar:</strong> Ibu Anda mencintai Anda, jadi dia akan berbohong dan bilang ide bisnis Anda bagus. Tugas Anda adalah mengajukan pertanyaan yang membuat orang mustahil untuk berbohong.</p>
+                        
+                        <h3>3 Hukum Utama (Golden Rules)</h3>
+                        <ul>
+                            <li><strong>Bicara tentang HIDUP mereka, bukan IDE Anda.</strong> Jangan tanya "Suka ide saya?", tapi tanya "Bagaimana Anda menyelesaikan masalah ini sekarang?"</li>
+                            <li><strong>Tanya tentang MASA LALU, bukan MASA DEPAN.</strong> Jangan tanya "Apakah Anda akan beli?", tapi tanya "Kapan terakhir kali Anda mencari solusi ini?"</li>
+                            <li><strong>Bicara lebih sedikit, mendengarkan lebih banyak.</strong> Anda sedang mengumpulkan fakta, bukan berjualan (pitching).</li>
+                        </ul>
+
+                        <h3>Contoh Percakapan</h3>
+                        <p>❌ <strong>Salah:</strong> "Saya punya ide aplikasi gym, bagus gak pak?" (Mengundang pujian palsu).<br>
+                        ✅ <strong>Benar:</strong> "Seberapa sering bapak olahraga bulan lalu? Apa kendala terbesarnya?" (Menggali fakta).</p>
+                    </div>
+                `
+            },
+            'jtbd': {
+                title: 'Jobs To Be Done (JTBD)',
+                subtitle: 'Memahami Motivasi Tersembunyi Pelanggan',
+                color: '#f59e0b',
+                content: `
+                    <div class="article-content">
+                        <p><strong>Definisi Inti:</strong> Pelanggan tidak membeli produk; mereka 'menyewa' produk untuk menyelesaikan sebuah pekerjaan (job) dalam hidup mereka.</p>
+                        
+                        <h3>Tiga Lapisan "Job"</h3>
+                        <ul>
+                            <li><strong>Functional Job:</strong> Tugas teknis. (Contoh: Membersihkan noda di baju).</li>
+                            <li><strong>Emotional Job:</strong> Perasaan pengguna. (Contoh: Merasa tenang baju tidak rusak).</li>
+                            <li><strong>Social Job:</strong> Pandangan orang lain. (Contoh: Terlihat modern dan rapi).</li>
+                        </ul>
+
+                        <h3>The Switch Framework (4 Kekuatan)</h3>
+                        <ul>
+                            <li><strong>Push:</strong> Masalah di situasi sekarang yang mendorong perubahan.</li>
+                            <li><strong>Pull:</strong> Janji manis solusi baru yang menarik.</li>
+                            <li><strong>Anxiety:</strong> Ketakutan atau keraguan akan solusi baru.</li>
+                            <li><strong>Inertia:</strong> Kenyamanan kebiasaan lama yang menahan perubahan.</li>
+                        </ul>
+                    </div>
+                `
+            },
+            'vpc': {
+                title: 'Value Proposition Canvas (VPC)',
+                subtitle: 'Mencocokkan Produk dengan Kebutuhan Pasar',
+                color: '#f59e0b',
+                content: `
+                    <div class="article-content">
+                        <p><strong>Prinsip:</strong> Jangan jualan "obeng", tapi jualan "lubang di dinding". Temukan titik temu antara penderitaan pelanggan dan obat yang Anda tawarkan.</p>
+                        
+                        <h3>Sisi Pelanggan (Lingkaran)</h3>
+                        <ul>
+                            <li><strong>Customer Jobs:</strong> Apa yang harus mereka selesaikan?</li>
+                            <li><strong>Pains (Rasa Sakit):</strong> Risiko, biaya, atau emosi negatif yang mengganggu.</li>
+                            <li><strong>Gains (Keuntungan):</strong> Manfaat ekstra yang mereka impikan.</li>
+                        </ul>
+
+                        <h3>Sisi Produk (Kotak)</h3>
+                        <ul>
+                            <li><strong>Products & Services:</strong> Apa wujud fisik produk Anda?</li>
+                            <li><strong>Pain Relievers:</strong> Bagaimana produk membunuh "Pain" pelanggan?</li>
+                            <li><strong>Gain Creators:</strong> Bagaimana produk mewujudkan "Gain" impian pelanggan?</li>
+                        </ul>
+                    </div>
+                `
+            }
+        };
+
+        // --- DATA PRODUK DETAIL (UPDATED WITH COMPREHENSIVE MECHANISM) ---
+        const productData = {
+            'solarfold': {
+                title: 'SolarFold X-1 Pro',
+                subtitle: 'Autonomous Laundry Robot',
+                color: '#3b82f6',
+                adCopy: '"Lupakan setrika. Lupakan waktu terbuang. Masukkan 10 baju, biarkan X-1 bekerja, dan nikmati hidup Anda kembali. Bukan sekadar evolusi, ini revolusi waktu."',
+                priceLabel: 'Early Bird Price',
+                price: 'IDR 4.999.000',
+                content: `
+                    <div class="detail-section">
+                        <h3 class="detail-h3" style="color:#3b82f6">Mekanisme Kerja Komprehensif</h3>
+                        
+                        <!-- VISUAL MEKANISME -->
+                        <div class="mechanism-diagram">
+                            <div class="sf-mech-container">
+                                <div class="sf-step">
+                                    <div class="sf-icon-box">📥</div>
+                                    <div class="sf-step-text"><strong>1. Input & Singulator:</strong> Baju digantung di rel (10 pcs). Gear spiral memisahkan gantungan satu per satu ke dalam chamber.</div>
+                                </div>
+                                <div class="sf-arrow">↓</div>
+                                <div class="sf-step">
+                                    <div class="sf-icon-box">👁️</div>
+                                    <div class="sf-step-text"><strong>2. Vision & Nano-Mist:</strong> Kamera AI scan noda & jenis kain. Uap nano (<5 mikron) merapikan kusut tanpa panas berlebih.</div>
+                                </div>
+                                <div class="sf-arrow">↓</div>
+                                <div class="sf-step">
+                                    <div class="sf-icon-box">🤖</div>
+                                    <div class="sf-step-text"><strong>3. Robotic Folding:</strong> Lengan robot (Servo & Stepper) melipat baju di atas plat miring presisi.</div>
+                                </div>
+                                <div class="sf-arrow">↓</div>
+                                <div class="sf-step">
+                                    <div class="sf-icon-box">📦</div>
+                                    <div class="sf-step-text"><strong>4. Output Stacking:</strong> Baju terlipat rapi jatuh ke laci output di dasar mesin.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="modal-p">Didukung <strong>Zone 5: Hybrid Energy Buffer</strong> (Baterai LiFePO4 12.8V 20Ah + Panel Surya 50WP) untuk operasi mandiri saat listrik padam.</p>
+                        
+                        <div class="detail-section">
+                            <h3 class="detail-h3" style="color:#3b82f6">Keunggulan Kompetitif</h3>
+                            <ul class="detail-list" style="list-style:none; padding-left:0;">
+                                <li style="color:#fff; margin-bottom:10px;">✅ <strong>Batch Automation:</strong> Masukkan 10 pakaian sekaligus, mesin bekerja otomatis tanpa ditunggu.</li>
+                                <li style="color:#fff; margin-bottom:10px;">✅ <strong>Hemat Energi 60%:</strong> Baterai LiFePO4 & Panel Surya memangkas tagihan listrik signifikan.</li>
+                                <li style="color:#fff; margin-bottom:10px;">✅ <strong>Vision AI Security:</strong> Kamera cerdas mendeteksi noda mikroskopis dan jenis kain.</li>
+                                <li style="color:#fff; margin-bottom:10px;">✅ <strong>Nano-Mist Steam:</strong> Teknologi uap dingin pengganti setrika panas yang merusak kain.</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+            'hydro': {
+                title: 'Hydro-AI Pro',
+                subtitle: 'Smart Water Management',
+                color: '#00f3ff',
+                adCopy: '"Jangan biarkan uang Anda mengalir ke selokan. Hydro-AI mengubah 80% limbah air cucian kembali menjadi air bersih siap pakai. Hemat tagihan, selamatkan bumi."',
+                priceLabel: 'Retail Price',
+                price: 'IDR 2.950.000',
+                content: `
+                    <div class="detail-section">
+                        <h3 class="detail-h3" style="color:#00f3ff">Mekanisme Filtrasi 5-Zona</h3>
+                        
+                        <!-- VISUAL MEKANISME -->
+                        <div class="mechanism-diagram">
+                            <div class="hydro-flow-container">
+                                <div class="hydro-node">1</div>
+                                <div class="hydro-line"></div>
+                                <div class="hydro-node">2</div>
+                                <div class="hydro-line"></div>
+                                <div class="hydro-node">3</div>
+                                <div class="hydro-line"></div>
+                                <div class="hydro-node">4</div>
+                                <div class="hydro-line"></div>
+                                <div class="hydro-node">5</div>
+                            </div>
+                        </div>
+                        <p class="modal-p" style="font-size:0.8rem; text-align:center; margin-top:-10px; color:#aaa;">Inlet → AI Vision → Routing → Purifikasi → Storage</p>
+
+                        <ul class="detail-list" style="list-style:none; padding-left:0; margin-top:15px;">
+                            <li style="color:#fff; margin-bottom:10px;">✅ <strong>Zone 1: Primary Screening:</strong> Filter <em>stainless mesh</em> 100 mikron menangkap partikel kasar (rambut/serat).</li>
+                            <li style="color:#fff; margin-bottom:10px;">✅ <strong>Zone 2: AI Spectrometry:</strong> Kamera ESP32 mendeteksi kekeruhan & residu deterjen secara visual.</li>
+                            <li style="color:#fff; margin-bottom:10px;">✅ <strong>Zone 3: Autonomous Routing:</strong> Katup cerdas memisahkan air limbah berat (buang) vs air layak olah (proses).</li>
+                            <li style="color:#fff; margin-bottom:10px;">✅ <strong>Zone 4: Purification:</strong> Membran Ultra-Filtration 0.01 mikron + Karbon Aktif + Sinar Deep-UVC (Sterilisasi 99.9%).</li>
+                            <li style="color:#fff; margin-bottom:10px;">✅ <strong>Zone 5: Energy Buffer:</strong> Baterai LiFePO4 menjamin operasi saat beban puncak listrik.</li>
+                        </ul>
+
+                        <div class="detail-section">
+                            <h3 class="detail-h3" style="color:#00f3ff">Keunggulan Utama</h3>
+                            <ul class="detail-list" style="list-style:none; padding-left:0;">
+                                <li style="color:#fff; margin-bottom:10px;">✅ <strong>Penghematan Ekstrem:</strong> Memangkas tagihan air PDAM hingga 70% per bulan.</li>
+                                <li style="color:#fff; margin-bottom:10px;">✅ <strong>Balik Modal Cepat:</strong> Estimasi ROI hanya dalam 7,5 bulan penggunaan laundry.</li>
+                                <li style="color:#fff; margin-bottom:10px;">✅ <strong>Sterilisasi Medis:</strong> Teknologi Deep-UVC membunuh 99.9% bakteri dalam air daur ulang.</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+            'radar': {
+                title: 'Radar UMKM',
+                subtitle: 'IoT Business Intelligence',
+                color: '#10b981',
+                adCopy: '"Asisten cerdas yang tahu kapan penjualan Anda akan turun, sebelum itu terjadi. Intip masa depan bisnis Anda dan jadilah satu langkah di depan kompetitor."',
+                priceLabel: 'Subscription Starting At',
+                price: 'IDR 199.000 / bln',
+                content: `
+                    <div class="radar-ai-box">
+                        <h3 style="color:#10b981; font-family:'Space Grotesk'; margin-bottom:10px;">✨ LIVE AI DEMO</h3>
+                        <p style="color:#aaa; font-size:0.9rem;">Coba kecerdasan Radar UMKM sekarang. Ketik jenis usaha Anda (cth: "Warung Kopi di Bandung") untuk mendapatkan analisis kilat.</p>
+                        <input type="text" id="radarInput" class="radar-input" placeholder="Masukkan jenis usaha...">
+                        <button onclick="generateRadarInsight()" class="radar-btn">GENERATE INSIGHT ✨</button>
+                        <div id="radarResult" class="radar-result"></div>
+                    </div>
+
+                    <div class="detail-section">
+                        <h3 class="detail-h3" style="color:#10b981">Arsitektur & Mekanisme Sistem</h3>
+                        
+                        <!-- VISUAL MEKANISME -->
+                        <div class="mechanism-diagram">
+                            <div class="radar-mech-grid">
+                                <div class="radar-box">
+                                    <h4>CORE ENGINE</h4>
+                                    <p>Logika Universal (Penjualan, Stok, Harga)</p>
+                                </div>
+                                <div class="radar-box">
+                                    <h4>MARKET SENSING</h4>
+                                    <p>Data Eksternal (Cuaca, Tren, Event)</p>
+                                </div>
+                                <div class="radar-box" style="grid-column: span 2; border-color:#fff;">
+                                    <h4>DOMAIN ADAPTER</h4>
+                                    <p>Penerjemah Konteks Usaha Spesifik</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <ul class="detail-list" style="list-style:none; padding-left:0; margin-top:15px;">
+                            <li style="color:#fff; margin-bottom:10px;">✅ <strong>Core Engine (Universal):</strong> Otak AI memproses pola data umum tanpa memandang jenis produk.</li>
+                            <li style="color:#fff; margin-bottom:10px;">✅ <strong>Market Sensing (IoT & Big Data):</strong> Mengambil sinyal eksternal real-time: cuaca, tren sosmed, dan keramaian wilayah.</li>
+                            <li style="color:#fff; margin-bottom:10px;">✅ <strong>Auto-Generated Features:</strong> Menghasilkan <em>Early Warning System</em> untuk risiko penurunan omzet dan rekomendasi stok otomatis.</li>
+                        </ul>
+
+                        <div class="detail-section">
+                            <h3 class="detail-h3" style="color:#10b981">Keunggulan Strategis</h3>
+                            <ul class="detail-list" style="list-style:none; padding-left:0;">
+                                <li style="color:#fff; margin-bottom:10px;">✅ <strong>Early Warning System:</strong> Notifikasi dini jika ada risiko penurunan omzet.</li>
+                                <li style="color:#fff; margin-bottom:10px;">✅ <strong>Market Sensing:</strong> Membaca tren internet dan keramaian wilayah sekitar secara real-time.</li>
+                                <li style="color:#fff; margin-bottom:10px;">✅ <strong>Universal Adapter:</strong> Cocok untuk semua jenis usaha (Laundry, Cafe, Retail).</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            }
+        };
+
+        // --- NAVIGATION LOGIC ---
+        function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+        function toggleMobileMenu() { document.getElementById('navbar').classList.toggle('mobile-active'); }
+        function closeAllModals() {
+            document.querySelectorAll('.modal-overlay').forEach(modal => modal.classList.remove('active'));
+        }
+        function openAboutModal() { closeAllModals(); document.getElementById('aboutModal').classList.add('active'); }
+        function openServicesModal() { closeAllModals(); document.getElementById('servicesModal').classList.add('active'); }
+        function openPortfolioModal() { closeAllModals(); document.getElementById('portfolioModal').classList.add('active'); }
+        function openContactModal() { closeAllModals(); document.getElementById('contactModal').classList.add('active'); }
+        function openArticlesModal() { closeAllModals(); document.getElementById('articlesModal').classList.add('active'); }
+
+        // --- PRODUCT DETAIL LOGIC ---
+        function openProductDetail(productId) {
+            document.getElementById('aboutModal').classList.remove('active');
+            const data = productData[productId];
+            const contentBox = document.getElementById('productDetailContent');
+            
+            contentBox.innerHTML = `
+                <button class="modal-close" onclick="closeAllModals()">×</button>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+                    <button onclick="openAboutModal()" style="background:none; border:1px solid #333; color:#888; padding:5px 10px; border-radius:5px; cursor:pointer;">← Kembali</button>
+                    <span class="modal-tag" style="color:${data.color}; margin:0;">PRODUCT DETAIL</span>
+                </div>
+                <h2 class="modal-h2" style="color:${data.color}">${data.title}</h2>
+                <div style="font-family:'JetBrains Mono'; color:#666; margin-bottom:1rem;">${data.subtitle}</div>
+                <div class="price-tag-container" style="border-color:${data.color}; color:${data.color}">
+                    <div class="price-label">${data.priceLabel}</div>
+                    <div class="price-amount">${data.price}</div>
+                </div>
+                <div class="ad-box" style="border-color:${data.color}">${data.adCopy}</div>
+                ${data.content}
+                <div style="margin-top:2rem; text-align:center;">
+                    <button onclick="openContactModal()" class="btn-primary" style="width:100%; background:${data.color}; color:#000;">Pre-Order Sekarang</button>
+                </div>
+            `;
+            document.getElementById('productDetailModal').classList.add('active');
+        }
+
+        // --- ARTICLE DETAIL LOGIC (NEW) ---
+        function openArticleDetail(articleId) {
+            document.getElementById('articlesModal').classList.remove('active');
+            const data = knowledgeBaseData[articleId];
+            const contentBox = document.getElementById('articleDetailContent');
+            
+            contentBox.innerHTML = `
+                <button class="modal-close" onclick="closeAllModals()">×</button>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+                    <button onclick="openArticlesModal()" style="background:none; border:1px solid #333; color:#888; padding:5px 10px; border-radius:5px; cursor:pointer;">← Kembali</button>
+                    <span class="modal-tag" style="color:${data.color}; margin:0;">ARTIKEL</span>
+                </div>
+                <h2 class="modal-h2" style="color:${data.color}">${data.title}</h2>
+                <div style="font-family:'JetBrains Mono'; color:#666; margin-bottom:1.5rem;">${data.subtitle}</div>
+                ${data.content}
+            `;
+            document.getElementById('articleDetailModal').classList.add('active');
+        }
+
+        // --- CHATBOT LOGIC ---
+        function toggleChat() {
+            document.getElementById('chatWindow').classList.toggle('open');
+        }
+
+        async function sendChat() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            if (!message) return;
+
+            const chatBody = document.getElementById('chatBody');
+            chatBody.innerHTML += `<div class="message user">${message}</div>`;
+            input.value = '';
+            chatBody.scrollTop = chatBody.scrollHeight;
+
+            const typingId = 'typing-' + Date.now();
+            chatBody.innerHTML += `<div id="${typingId}" class="message bot">Sedang mengetik...</div>`;
+            chatBody.scrollTop = chatBody.scrollHeight;
+
+            const systemPrompt = "Anda adalah AXIA-One, asisten AI canggih untuk startup AXIA Corp. Kami memiliki 3 produk: SolarFold X-1 Pro (Robot Laundry Otonom), Hydro-AI Pro (Manajemen Air Cerdas), dan Radar UMKM (Intelijen Bisnis IoT). Jawab pertanyaan pengguna dengan gaya profesional, futuristik, singkat, dan membantu. Gunakan Bahasa Indonesia.";
+            const reply = await callGemini(message, systemPrompt);
+
+            document.getElementById(typingId).remove();
+            chatBody.innerHTML += `<div class="message bot">${reply}</div>`;
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        function handleChatKey(e) {
+            if (e.key === 'Enter') sendChat();
+        }
+
+        // --- RADAR AI INSIGHT LOGIC ---
+        async function generateRadarInsight() {
+            const input = document.getElementById('radarInput').value;
+            const resultBox = document.getElementById('radarResult');
+            
+            if (!input) {
+                resultBox.style.display = 'block';
+                resultBox.innerHTML = "Mohon masukkan jenis usaha Anda.";
+                return;
+            }
+
+            resultBox.style.display = 'block';
+            resultBox.innerHTML = "⚡ Mengakses satelit data... Menganalisis tren pasar...";
+
+            const systemPrompt = "Anda adalah Mesin Intelijen Radar UMKM. Pengguna akan memberikan jenis usaha. Berikan satu wawasan pasar strategis atau tips singkat (maksimal 3 kalimat) yang spesifik untuk usaha tersebut di Indonesia agar lebih untung. Gaya bahasa: Data-driven, Cerdas.";
+            const insight = await callGemini(input, systemPrompt);
+
+            resultBox.innerHTML = `<strong>ANALISIS RADAR:</strong><br>${insight}`;
+        }
+
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) closeAllModals();
+            });
+        });
+
+    </script>
+</body>
+</html>
